@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    environment:
+      # Point frontend to the backend service name within the Docker network
+      - REACT_APP_BACKEND_URL=http://backend:5000
+
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      # Pass your Gemini API key from the host environment to the container
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    # volumes:
+    #   - ./backend/data:/app/data # Uncomment if you need persistent local data storage
